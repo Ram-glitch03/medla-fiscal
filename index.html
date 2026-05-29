@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asesoría Fiscal · MEDLA Asesores</title>
+  <meta name="description" content="Asesoría fiscal premium en España y México. Declaraciones, planificación fiscal, fiscalidad internacional y optimización patrimonial." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    /* ─── Reset ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    /* ─── Tokens ─────────────────────────────────── */
+    :root {
+      --navy:     #1A1A2E;
+      --navy-dk:  #0F0F1E;
+      --gold:     #C9A84C;
+      --gold-lt:  #E2C97E;
+      --cream:    #F5F3EF;
+      --gray-bl:  #3A3A4E;
+      --gray-sf:  #9A9AB0;
+      --white:    #FFFFFF;
+      --ff-serif: 'Playfair Display', Georgia, serif;
+      --ff-sans:  'DM Sans', system-ui, sans-serif;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--gray-bl);
+      font-family: var(--ff-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── Scrollbar ──────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* ─── Typography ─────────────────────────────── */
+    h1, h2, h3 { font-family: var(--ff-serif); line-height: 1.15; }
+    .eyebrow {
+      font-family: var(--ff-sans);
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); display: block; margin-bottom: 1rem;
+    }
+
+    /* ─── Layout ─────────────────────────────────── */
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ─── Gold Rule ──────────────────────────────── */
+    .rule { width: 48px; height: 2px; background: var(--gold); margin: 1.25rem 0; }
+    .rule.center { margin: 1.25rem auto; }
+
+    /* ─── Buttons ────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.9rem 2rem;
+      font-family: var(--ff-sans); font-size: 0.85rem; font-weight: 500;
+      letter-spacing: 0.04em; cursor: pointer; text-decoration: none;
+      position: relative; overflow: hidden; border: none;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+    }
+    /* Shimmer sweep */
+    .btn::before {
+      content: '';
+      position: absolute; top: 0; left: -120%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.55s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:hover::before { left: 160%; }
+    .btn:active { transform: translateY(0); }
+
+    .btn-accent  { background: var(--gold); color: var(--navy); }
+    .btn-primary { background: var(--navy); color: var(--white); }
+    .btn-ghost   { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.3); }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-accent:hover  { box-shadow: 0 10px 35px rgba(201,168,76,0.45); }
+    .btn-primary:hover { box-shadow: 0 10px 35px rgba(26,26,46,0.5); }
+
+    /* ══════════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      padding: 1.6rem 0;
+      transition: background 0.45s, padding 0.45s, box-shadow 0.45s;
+    }
+    .nav.is-scrolled {
+      background: rgba(15,15,30,0.97);
+      backdrop-filter: blur(14px);
+      padding: 1rem 0;
+      box-shadow: 0 1px 0 rgba(201,168,76,0.15), 0 4px 40px rgba(0,0,0,0.35);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { text-decoration: none; }
+    .nav-brand-name {
+      font-family: var(--ff-serif); font-size: 1.5rem; font-weight: 700;
+      color: var(--white); letter-spacing: 0.06em; line-height: 1;
+    }
+    .nav-brand-sub {
+      font-size: 0.6rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); margin-top: 0.15rem; display: block;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 2.5rem; list-style: none;
+    }
+    .nav-links li { position: relative; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.65);
+      text-decoration: none; transition: color 0.25s;
+      position: relative; padding-bottom: 2px;
+    }
+    /* Underline slide from left */
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width 0.3s var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { padding: 0.55rem 1.4rem !important; font-size: 0.75rem !important; }
+    .nav-cta::after { display: none !important; }
+
+    /* ══════════════════════════════════════════════
+       HERO — Split Layout
+    ══════════════════════════════════════════════ */
+    .hero {
+      background: var(--navy);
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    /* Subtle grid mesh */
+    .hero-mesh {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 85% 85% at 30% 50%, black 20%, transparent 70%);
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 50% 60% at 25% 50%, rgba(201,168,76,0.07) 0%, transparent 65%);
+    }
+
+    /* Split container — full viewport width */
+    .hero-split {
+      display: grid;
+      grid-template-columns: 54% 46%;
+      min-height: 100svh;
+      position: relative; z-index: 2;
+      width: 100%;
+    }
+
+    /* Left col — aligns text with the rest of the page */
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 9rem max(2rem, calc((100vw - 1180px) / 2 + 3rem)) 5rem max(2rem, calc((100vw - 1180px) / 2 + 2rem));
+    }
+
+    /* Badge */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.28);
+      border-radius: 100px; padding: 0.35rem 1rem;
+      margin-bottom: 2.25rem; width: fit-content;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; background: var(--gold); border-radius: 50%;
+      animation: dot-pulse 2s ease-in-out infinite;
+    }
+    .hero-badge span { font-size: 0.73rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+    @keyframes dot-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.65)} }
+
+    /* Line-mask headline */
+    .hero-headline { font-size: clamp(2.8rem, 4.5vw, 5.2rem); font-weight: 700; color: var(--white); line-height: 1.08; margin-bottom: 1.5rem; }
+    .h-line { display: block; overflow: hidden; }
+    .h-line-inner { display: block; will-change: transform; }
+    .h-gold { color: var(--gold); }
+    .h-italic { font-style: italic; }
+
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.55); max-width: 460px; line-height: 1.8; margin-bottom: 2.5rem; }
+    .hero-ctas { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+
+    /* Right col — image */
+    .hero-right {
+      position: relative; overflow: hidden;
+    }
+    .hero-right img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+    }
+    /* Blend gradients */
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(to right, var(--navy) 0%, rgba(26,26,46,0.25) 35%, transparent 60%),
+        linear-gradient(to bottom, var(--navy) 0%, transparent 15%);
+    }
+    /* Gold corner accents */
+    .hero-corner {
+      position: absolute; z-index: 3;
+      width: 50px; height: 50px;
+    }
+    .hero-corner.tr { top: 2rem; right: 2rem; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+    .hero-corner.bl { bottom: 8rem; left: 0; border-bottom: 2px solid rgba(201,168,76,0.3); border-left: 2px solid rgba(201,168,76,0.3); }
+
+    /* Scroll hint */
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 2rem;
+      display: flex; align-items: center; gap: 0.75rem; z-index: 10;
+    }
+    .hero-scroll span { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+    .scroll-track { width: 44px; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+    /* ── Stats Bar ─────────────────────────────── */
+    .hero-stats-bar {
+      position: relative; z-index: 2;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .hero-stats-inner { display: grid; grid-template-columns: repeat(4,1fr); }
+    .hstat { padding: 1.75rem 2rem; border-right: 1px solid rgba(255,255,255,0.07); }
+    .hstat:last-child { border-right: none; }
+    .hstat-num { font-family: var(--ff-serif); font-size: 2.4rem; font-weight: 700; color: var(--gold); line-height: 1; display: block; }
+    .hstat-suffix { font-size: 1.3rem; vertical-align: super; line-height: 1; }
+    .hstat-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.35rem; display: block; }
+
+    /* ══════════════════════════════════════════════
+       SECTION HEADER
+    ══════════════════════════════════════════════ */
+    .s-head { text-align: center; max-width: 560px; margin: 0 auto 4.5rem; }
+    .s-head h2 { font-size: clamp(1.9rem, 3.5vw, 2.8rem); color: var(--navy); margin-bottom: 0.75rem; }
+    .s-head p { font-size: 0.92rem; color: var(--gray-sf); line-height: 1.75; }
+
+    /* ══════════════════════════════════════════════
+       SERVICES
+    ══════════════════════════════════════════════ */
+    .sec-services { background: var(--cream); padding: 8rem 0; }
+
+    /* Visual strip */
+    .svc-strip {
+      position: relative; overflow: hidden; margin-bottom: 4rem;
+      height: 200px;
+    }
+    .svc-strip img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+    .svc-strip::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to right, rgba(26,26,46,0.85) 0%, rgba(26,26,46,0.4) 50%, rgba(26,26,46,0.8) 100%);
+    }
+    .svc-strip-text {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      flex-direction: column; gap: 0.5rem;
+    }
+    .svc-strip-text h3 { font-family: var(--ff-serif); font-size: 1.9rem; font-weight: 700; color: var(--white); }
+    .svc-strip-text p { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+    .svc-strip-corner {
+      position: absolute; z-index: 3;
+      width: 36px; height: 36px;
+    }
+    .svc-strip-corner.tl { top: 1.5rem; left: 1.5rem; border-top: 2px solid rgba(201,168,76,0.6); border-left: 2px solid rgba(201,168,76,0.6); }
+    .svc-strip-corner.br { bottom: 1.5rem; right: 1.5rem; border-bottom: 2px solid rgba(201,168,76,0.6); border-right: 2px solid rgba(201,168,76,0.6); }
+
+    /* Cards */
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .svc-card {
+      background: var(--white); border: 1px solid rgba(26,26,46,0.07);
+      padding: 2.25rem; position: relative; overflow: hidden;
+      transition: box-shadow 0.4s, border-color 0.4s, transform 0.4s var(--ease-out);
+      will-change: transform;
+    }
+    /* Bottom gold border on hover */
+    .svc-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease-out);
+    }
+    /* Shimmer */
+    .svc-card::before {
+      content: '';
+      position: absolute; top: 0; left: -120%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.05), transparent);
+      transform: skewX(-10deg); transition: left 0.7s;
+    }
+    .svc-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 64px rgba(201,168,76,0.12), 0 0 0 1px rgba(201,168,76,0.18);
+      border-color: rgba(201,168,76,0.2);
+    }
+    .svc-card:hover::after { transform: scaleX(1); }
+    .svc-card:hover::before { left: 180%; }
+
+    .svc-icon {
+      width: 50px; height: 50px;
+      background: rgba(201,168,76,0.1);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+      transition: background 0.3s, transform 0.4s var(--ease-out);
+    }
+    .svc-icon svg {
+      width: 24px; height: 24px; stroke: var(--gold); fill: none;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 0.3s;
+    }
+    .svc-card:hover .svc-icon { background: var(--gold); transform: scale(1.1) rotate(-5deg); }
+    .svc-card:hover .svc-icon svg { stroke: var(--navy); }
+
+    .svc-card h3 { font-family: var(--ff-serif); font-size: 1.15rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .svc-card p { font-size: 0.855rem; color: var(--gray-sf); line-height: 1.65; }
+    .svc-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 1.25rem; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none; transition: gap 0.3s var(--ease-out);
+    }
+    .svc-link:hover { gap: 0.9rem; }
+
+    /* ══════════════════════════════════════════════
+       WHY MEDLA — Photo + Features
+    ══════════════════════════════════════════════ */
+    .sec-why { background: var(--navy); padding: 8rem 0; overflow: hidden; }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+
+    /* Photo col */
+    .why-photo-col { position: relative; overflow: hidden; }
+    .why-photo-col img {
+      width: 100%; height: 460px; object-fit: cover;
+      object-position: center top; display: block;
+      transition: transform 0.9s var(--ease-out);
+    }
+    .why-photo-col:hover img { transform: scale(1.04); }
+    .why-photo-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      padding: 0 2rem 2rem;
+      background: linear-gradient(to top, rgba(26,26,46,0.95) 0%, transparent 100%);
+    }
+    .why-photo-quote {
+      font-family: var(--ff-serif); font-size: 1.05rem; font-style: italic;
+      color: var(--white); line-height: 1.55; margin-bottom: 0.6rem;
+    }
+    .why-photo-quote em { color: var(--gold); font-style: normal; }
+    .why-photo-sig { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+    /* Gold corner accents */
+    .why-photo-tl {
+      position: absolute; top: 0; left: 0; z-index: 3;
+      width: 44px; height: 44px;
+      border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+    }
+    .why-photo-br {
+      position: absolute; bottom: 0; right: 0; z-index: 3;
+      width: 44px; height: 44px;
+      border-bottom: 2px solid rgba(201,168,76,0.4); border-right: 2px solid rgba(201,168,76,0.4);
+    }
+
+    /* Features col */
+    .why-features { list-style: none; display: flex; flex-direction: column; gap: 1.1rem; }
+    .why-feat { display: flex; align-items: center; gap: 1.25rem; padding: 0.75rem; margin: -0.75rem; transition: background 0.3s; cursor: default; }
+    .why-feat:hover { background: rgba(201,168,76,0.05); }
+    .why-feat-ico {
+      width: 42px; height: 42px; flex-shrink: 0;
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s, border-color 0.3s, transform 0.35s var(--ease-out);
+    }
+    .why-feat-ico svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.3s; }
+    .why-feat:hover .why-feat-ico { background: var(--gold); border-color: var(--gold); transform: scale(1.12); }
+    .why-feat:hover .why-feat-ico svg { stroke: var(--navy); }
+    .why-feat-txt h4 { font-family: var(--ff-sans); font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+    .why-feat-txt p { font-size: 0.82rem; color: var(--gray-sf); line-height: 1.5; }
+
+    .why-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.5rem; }
+    .why-tag { background: rgba(201,168,76,0.09); border: 1px solid rgba(201,168,76,0.22); padding: 0.3rem 0.85rem; font-size: 0.72rem; font-weight: 500; color: var(--gold); letter-spacing: 0.04em; }
+
+    /* ══════════════════════════════════════════════
+       PROCESO
+    ══════════════════════════════════════════════ */
+    .sec-proceso { background: var(--cream); padding: 8rem 0; }
+    .proceso-track { display: grid; grid-template-columns: repeat(5,1fr); position: relative; margin-top: 4.5rem; }
+    .proceso-line-bg { position: absolute; top: 25px; left: calc(10% + 13px); right: calc(10% + 13px); height: 1px; background: rgba(26,26,46,0.1); z-index: 0; }
+    .proceso-line-fg { height: 100%; background: linear-gradient(to right, var(--gold), var(--gold-lt)); transform: scaleX(0); transform-origin: left; }
+    .paso { text-align: center; padding: 0 0.75rem; position: relative; z-index: 1; cursor: default; }
+    .paso-num {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: var(--white); border: 2px solid rgba(26,26,46,0.12);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-family: var(--ff-serif); font-size: 1.1rem; font-weight: 700; color: var(--navy);
+      transition: background 0.35s, border-color 0.35s, transform 0.35s var(--ease-out), box-shadow 0.35s;
+    }
+    .paso.lit .paso-num { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+    .paso:hover .paso-num { background: var(--gold); border-color: var(--gold); transform: scale(1.15); box-shadow: 0 0 24px rgba(201,168,76,0.45); }
+    .paso h4 { font-family: var(--ff-sans); font-size: 0.85rem; font-weight: 600; color: var(--navy); margin-bottom: 0.35rem; }
+    .paso p { font-size: 0.78rem; color: var(--gray-sf); line-height: 1.6; }
+
+    /* ══════════════════════════════════════════════
+       STATS — with image background
+    ══════════════════════════════════════════════ */
+    .sec-stats {
+      position: relative; padding: 7rem 0; overflow: hidden;
+      background-color: var(--navy);
+    }
+    .sec-stats-bg {
+      position: absolute; inset: 0;
+      background-image: url('assets/abstract-gold.png');
+      background-size: cover; background-position: center;
+      opacity: 0.22;
+    }
+    .sec-stats-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(26,26,46,0.7) 0%, rgba(15,15,30,0.6) 100%);
+    }
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); position: relative; z-index: 2; }
+    .stat { padding: 3rem 2rem; text-align: center; border-right: 1px solid rgba(255,255,255,0.07); }
+    .stat:last-child { border-right: none; }
+    .stat-n { font-family: var(--ff-serif); font-size: clamp(2.8rem, 5vw, 4rem); font-weight: 700; color: var(--gold); line-height: 1; display: block; }
+    .stat-l { font-size: 0.82rem; color: rgba(255,255,255,0.42); margin-top: 0.75rem; line-height: 1.45; }
+
+    /* ══════════════════════════════════════════════
+       TESTIMONIOS
+    ══════════════════════════════════════════════ */
+    .sec-testi { background: var(--white); padding: 8rem 0; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 4.5rem; }
+    .testi-card {
+      background: var(--cream); border: 1px solid rgba(26,26,46,0.06);
+      padding: 2.5rem; position: relative;
+      transition: box-shadow 0.35s, transform 0.35s var(--ease-out);
+    }
+    .testi-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(26,26,46,0.1); }
+    .testi-qmark { position: absolute; top: 1rem; right: 1.75rem; font-family: var(--ff-serif); font-size: 5rem; line-height: 1; color: var(--gold); opacity: 0.2; pointer-events: none; user-select: none; }
+    .testi-stars { display: flex; gap: 0.2rem; margin-bottom: 1.25rem; }
+    .testi-star { color: var(--gold); font-size: 0.85rem; }
+    .testi-text { font-size: 0.9rem; color: var(--gray-bl); line-height: 1.8; font-style: italic; margin-bottom: 2rem; }
+    .testi-author { display: flex; align-items: center; gap: 1rem; border-top: 1px solid rgba(26,26,46,0.08); padding-top: 1.5rem; }
+    .testi-av { width: 40px; height: 40px; flex-shrink: 0; background: var(--navy); display: flex; align-items: center; justify-content: center; font-family: var(--ff-serif); font-weight: 700; font-size: 0.9rem; color: var(--gold); }
+    .testi-name { font-size: 0.85rem; font-weight: 600; color: var(--navy); }
+    .testi-role { font-size: 0.775rem; color: var(--gray-sf); }
+    .testi-badge { margin-left: auto; flex-shrink: 0; font-size: 0.67rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,0.1); padding: 0.25rem 0.65rem; }
+
+    /* ══════════════════════════════════════════════
+       FAQ
+    ══════════════════════════════════════════════ */
+    .sec-faq { background: var(--cream); padding: 8rem 0; }
+    .faq-wrap { max-width: 780px; margin: 4rem auto 0; }
+    .faq-item {
+      border-bottom: 1px solid rgba(26,26,46,0.1);
+      position: relative; overflow: hidden;
+      padding-left: 0;
+      transition: padding-left 0.35s var(--ease-out);
+    }
+    /* Gold left accent */
+    .faq-item::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: var(--gold);
+      transform: scaleY(0); transform-origin: center;
+      transition: transform 0.35s var(--ease-out);
+    }
+    .faq-item:hover { padding-left: 1.25rem; }
+    .faq-item:hover::before { transform: scaleY(1); }
+    .faq-item.open { padding-left: 1.25rem; }
+    .faq-item.open::before { transform: scaleY(1); }
+
+    .faq-q {
+      width: 100%; background: none; border: none; padding: 1.6rem 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      cursor: pointer; text-align: left;
+      font-family: var(--ff-sans); font-size: 0.95rem; font-weight: 500;
+      color: var(--navy); transition: color 0.25s;
+    }
+    .faq-q:hover { color: var(--gold); }
+    .faq-ico {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s;
+    }
+    .faq-ico svg { width: 13px; height: 13px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; transition: transform 0.35s var(--ease-out); }
+    .faq-item.open .faq-ico { background: var(--gold); }
+    .faq-item.open .faq-ico svg { stroke: var(--navy); transform: rotate(45deg); }
+    .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.45s var(--ease-out); }
+    .faq-body-inner { padding: 0 0 1.5rem; font-size: 0.875rem; color: var(--gray-sf); line-height: 1.85; }
+    .faq-item.open .faq-body { max-height: 320px; }
+
+    /* ══════════════════════════════════════════════
+       CTA
+    ══════════════════════════════════════════════ */
+    .sec-cta { background: var(--navy); padding: 9rem 0; position: relative; overflow: hidden; text-align: center; }
+    .cta-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: var(--ff-serif); font-size: 18vw; font-weight: 700; color: rgba(255,255,255,0.025); white-space: nowrap; pointer-events: none; user-select: none; letter-spacing: 0.05em; }
+    .cta-inner { position: relative; z-index: 1; max-width: 660px; margin: 0 auto; }
+    .cta-inner h2 { font-size: clamp(1.9rem, 3.8vw, 3.2rem); color: var(--white); margin-bottom: 1.25rem; }
+    .cta-inner h2 span { color: var(--gold); }
+    .cta-inner p { font-size: 1rem; color: rgba(255,255,255,0.52); margin-bottom: 2.75rem; line-height: 1.8; }
+    .cta-btns { display: flex; align-items: center; justify-content: center; gap: 1.1rem; flex-wrap: wrap; }
+    .cta-note { margin-top: 2rem; font-size: 0.775rem; color: rgba(255,255,255,0.28); }
+
+    /* ══════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════ */
+    .footer { background: var(--navy-dk); padding: 5.5rem 0 2.5rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: var(--ff-serif); font-size: 1.6rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; }
+    .footer-desc { font-size: 0.85rem; color: var(--gray-sf); line-height: 1.75; margin-bottom: 1.5rem; max-width: 270px; }
+    .footer-flags { display: flex; gap: 0.7rem; }
+    .footer-flag { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); padding: 0.28rem 0.7rem; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+    .footer-col h5 { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+    .footer-col a { font-size: 0.85rem; color: var(--gray-sf); text-decoration: none; transition: color 0.25s, padding-left 0.25s; display: block; }
+    .footer-col a:hover { color: var(--white); padding-left: 4px; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.22); }
+    .footer-copy a { color: var(--gold); text-decoration: none; }
+
+    /* ── WhatsApp Float ──────────────────────────── */
+    .wa-float {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 800;
+      width: 52px; height: 52px; background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4); text-decoration: none;
+      transition: transform 0.35s var(--ease-out), box-shadow 0.35s;
+    }
+    .wa-float:hover { transform: scale(1.12); box-shadow: 0 8px 32px rgba(37,211,102,0.6); }
+    .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* ─── Responsive ─────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-split { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 9rem 2rem 4rem; }
+      .services-grid { grid-template-columns: repeat(2,1fr); }
+      .why-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .why-photo-col img { height: 380px; }
+      .proceso-track { grid-template-columns: repeat(3,1fr); row-gap: 2.5rem; }
+      .proceso-line-bg { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-stats-inner { grid-template-columns: repeat(2,1fr); }
+      .hstat { border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .hstat:nth-child(2n) { border-right: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .proceso-track { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .stat:nth-child(2n) { border-right: none; }
+      .stat:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,0.06); }
+      .testi-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .svc-strip { height: 150px; }
+      .svc-strip-text h3 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- WhatsApp Float -->
+<a class="wa-float" href="https://wa.me/521234567890" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ════ NAV ══════════════════════════════════════ -->
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand" style="display: flex; align-items: center;">
+        <img src="assets/MEDLA_logo_white.png" alt="MEDLA Asesores" style="height: 48px; width: auto;" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#testimonios">Clientes</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contacto" class="btn btn-accent nav-cta">Agenda tu cita</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ HERO — Split ════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-mesh" aria-hidden="true"></div>
+  <div class="hero-glow"  aria-hidden="true"></div>
+
+  <div class="hero-split">
+
+      <!-- Left: Text -->
+      <div class="hero-left">
+        <div class="hero-badge" id="hero-badge">
+          <span class="hero-badge-dot" aria-hidden="true"></span>
+          <span>Asesoría Fiscal Premium · España &amp; México</span>
+        </div>
+
+        <h1 class="hero-headline">
+          <span class="h-line"><span class="h-line-inner">Tu estrategia fiscal,</span></span>
+          <span class="h-line"><span class="h-line-inner">diseñada para <span class="h-gold">proteger</span></span></span>
+          <span class="h-line"><span class="h-line-inner">y <span class="h-gold h-italic">hacer crecer</span></span></span>
+          <span class="h-line"><span class="h-line-inner">tu patrimonio.</span></span>
+        </h1>
+
+        <p class="hero-sub" id="hero-sub">
+          Optimizamos tu carga tributaria, minimizamos riesgos y protegemos lo que has construido — en España y en México.
+        </p>
+
+        <div class="hero-ctas" id="hero-ctas">
+          <a href="#contacto" class="btn btn-accent">Agenda tu consulta gratuita</a>
+          <a href="#servicios" class="btn btn-ghost">Ver servicios</a>
+        </div>
+      </div>
+
+      <!-- Right: Image -->
+      <div class="hero-right" id="hero-right">
+        <img src="assets/hero-office.png" alt="Despacho MEDLA — Madrid" />
+        <div class="hero-corner tr" aria-hidden="true"></div>
+        <div class="hero-corner bl" aria-hidden="true"></div>
+      </div>
+
+    </div>
+  </div><!-- /.hero-split -->
+
+  <!-- Stats Bar -->
+  <div class="hero-stats-bar" id="hero-stats-bar">
+    <div class="wrap">
+      <div class="hero-stats-inner">
+        <div class="hstat">
+          <span class="hstat-num"><span class="counter-val" data-to="15">0</span><span class="hstat-suffix">+</span></span>
+          <span class="hstat-label">Años de experiencia</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-num"><span class="counter-val" data-to="500">0</span><span class="hstat-suffix">+</span></span>
+          <span class="hstat-label">Clientes asesorados</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-num">2</span>
+          <span class="hstat-label">Jurisdicciones · España &amp; México</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-num"><span class="counter-val" data-to="98">0</span><span class="hstat-suffix">%</span></span>
+          <span class="hstat-label">Declaraciones sin incidencias</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="hero-scroll" aria-hidden="true" id="hero-scroll">
+    <div class="scroll-track"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ════ SERVICIOS ═══════════════════════════════ -->
+<section class="sec-services" id="servicios">
+  <div class="wrap">
+    <div class="s-head">
+      <span class="eyebrow">Nuestros Servicios</span>
+      <h2>Cobertura fiscal completa en dos continentes</h2>
+      <div class="rule center"></div>
+    </div>
+
+    <!-- Visual strip with abstract-gold image -->
+    <div class="svc-strip">
+      <img src="assets/abstract-gold.png" alt="" aria-hidden="true" />
+      <div class="svc-strip-corner tl" aria-hidden="true"></div>
+      <div class="svc-strip-corner br" aria-hidden="true"></div>
+      <div class="svc-strip-text">
+        <h3>España · México · Internacional</h3>
+        <p>SAT · AEAT · Convenio de Doble Imposición</p>
+      </div>
+    </div>
+
+    <div class="services-grid" id="svc-grid">
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Declaraciones de Impuestos</h3>
+        <p>ISR, IVA, IRPF — presentación puntual ante el SAT y la AEAT, sin incidencias.</p>
+        <a href="#contacto" class="svc-link">Más información →</a>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Planificación Fiscal Estratégica</h3>
+        <p>Reducimos tu carga tributaria de forma legal con un plan a medida y proyección de ahorros.</p>
+        <a href="#contacto" class="svc-link">Más información →</a>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Fiscalidad Internacional</h3>
+        <p>Convenio España-México aplicado. Activos en ambos países sin doble imposición.</p>
+        <a href="#contacto" class="svc-link">Más información →</a>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Optimización Patrimonial</h3>
+        <p>Inmuebles, empresas e inversiones estructuradas para máxima eficiencia fiscal y herencia.</p>
+        <a href="#contacto" class="svc-link">Más información →</a>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3>Consultoría para Empresas</h3>
+        <p>Régimen óptimo, IVA, nómina y cumplimiento fiscal completo para tu empresa.</p>
+        <a href="#contacto" class="svc-link">Más información →</a>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Defensa ante Autoridades</h3>
+        <p>Representación experta ante el SAT y la AEAT en auditorías, recursos y procedimientos.</p>
+        <a href="#contacto" class="svc-link">Más información →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════ WHY MEDLA ════════════════════════════════ -->
+<section class="sec-why" id="por-que">
+  <div class="wrap">
+    <div class="why-grid">
+
+      <!-- Left: Photo with overlay quote -->
+      <div class="why-photo-col" id="why-photo">
+        <div class="why-photo-tl" aria-hidden="true"></div>
+        <div class="why-photo-br" aria-hidden="true"></div>
+        <img src="assets/advisor.png" alt="Asesor fiscal MEDLA" />
+        <div class="why-photo-overlay">
+          <p class="why-photo-quote">"La verdadera asesoría fiscal construye una estrategia que <em>protege tu futuro.</em>"</p>
+          <span class="why-photo-sig">Equipo MEDLA · Dirección Fiscal</span>
+        </div>
+      </div>
+
+      <!-- Right: Features -->
+      <div id="why-right">
+        <span class="eyebrow">¿Por qué MEDLA?</span>
+        <h2 style="color:var(--white); font-size:clamp(1.8rem,3vw,2.5rem); margin-bottom:1rem;">
+          Un despacho con visión global y raíces locales
+        </h2>
+        <div class="rule"></div>
+        <p style="color:rgba(255,255,255,0.52); margin-bottom:2.5rem; font-size:0.9rem; line-height:1.8; max-width:460px;">
+          Presencia en Madrid y Ciudad Satélite. Entendemos los retos de personas y empresas que operan entre España y México.
+        </p>
+
+        <ul class="why-features" id="why-feats">
+          <li class="why-feat">
+            <div class="why-feat-ico">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="why-feat-txt">
+              <h4>Expertise dual España-México</h4>
+              <p>Especialización real en ambas jurisdicciones.</p>
+            </div>
+          </li>
+          <li class="why-feat">
+            <div class="why-feat-ico">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="why-feat-txt">
+              <h4>Equipo multidisciplinario</h4>
+              <p>Fiscalistas, contadores y asesores patrimoniales coordinados.</p>
+            </div>
+          </li>
+          <li class="why-feat">
+            <div class="why-feat-ico">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="why-feat-txt">
+              <h4>Confidencialidad total</h4>
+              <p>Máxima discreción y cumplimiento de protección de datos.</p>
+            </div>
+          </li>
+          <li class="why-feat">
+            <div class="why-feat-ico">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="why-feat-txt">
+              <h4>Respuesta en menos de 24 h</h4>
+              <p>Cada consulta tiene respuesta garantizada en un día hábil.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="why-tags" style="margin-top:2rem;">
+          <span class="why-tag">Derecho Fiscal</span>
+          <span class="why-tag">España · México</span>
+          <span class="why-tag">Patrimonio</span>
+          <span class="why-tag">Empresarial</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════ PROCESO ══════════════════════════════════ -->
+<section class="sec-proceso" id="proceso">
+  <div class="wrap">
+    <div class="s-head">
+      <span class="eyebrow">Cómo Trabajamos</span>
+      <h2>Un proceso claro, de principio a fin</h2>
+      <div class="rule center"></div>
+      <p>Cada etapa está diseñada para darte certeza total.</p>
+    </div>
+
+    <div class="proceso-track" id="proceso-track">
+      <div class="proceso-line-bg">
+        <div class="proceso-line-fg" id="proc-line"></div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <h4>Consulta Inicial</h4>
+        <p>30 minutos gratuitos para conocer tu situación.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <h4>Diagnóstico Fiscal</h4>
+        <p>Análisis profundo en cada jurisdicción relevante.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <h4>Estrategia a Medida</h4>
+        <p>Plan personalizado con proyección de ahorros.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <h4>Implementación</h4>
+        <p>Ejecución precisa de todas las gestiones acordadas.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">5</div>
+        <h4>Seguimiento Continuo</h4>
+        <p>Ajustes proactivos ante cambios normativos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ STATS ════════════════════════════════════ -->
+<section class="sec-stats" id="stats">
+  <div class="sec-stats-bg" aria-hidden="true"></div>
+  <div class="sec-stats-overlay" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="stats-row" id="stats-row">
+      <div class="stat">
+        <span class="stat-n"><span class="c2" data-to="15">0</span><span style="font-size:1.8rem">+</span></span>
+        <p class="stat-l">Años de experiencia en derecho fiscal</p>
+      </div>
+      <div class="stat">
+        <span class="stat-n"><span class="c2" data-to="500">0</span><span style="font-size:1.8rem">+</span></span>
+        <p class="stat-l">Clientes con patrimonio protegido</p>
+      </div>
+      <div class="stat">
+        <span class="stat-n">2</span>
+        <p class="stat-l">Oficinas: Madrid &amp; Ciudad Satélite</p>
+      </div>
+      <div class="stat">
+        <span class="stat-n"><span class="c2" data-to="98">0</span><span style="font-size:1.8rem">%</span></span>
+        <p class="stat-l">Tasa de resolución favorable</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ TESTIMONIOS ══════════════════════════════ -->
+<section class="sec-testi" id="testimonios">
+  <div class="wrap">
+    <div class="s-head">
+      <span class="eyebrow">Testimonios</span>
+      <h2>Lo que dicen nuestros clientes</h2>
+      <div class="rule center"></div>
+    </div>
+
+    <div class="testi-grid" id="testi-grid">
+      <div class="testi-card">
+        <div class="testi-qmark" aria-hidden="true">"</div>
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-text">"Tenía propiedades en Madrid y CDMX y no sabía cómo gestionar las obligaciones fiscales en ambos países. MEDLA diseñó una estructura que redujo mi carga fiscal en casi un 30%."</p>
+        <div class="testi-author">
+          <div class="testi-av">CR</div>
+          <div><div class="testi-name">Carlos Rodríguez</div><div class="testi-role">Empresario · Inmobiliario</div></div>
+          <span class="testi-badge">🇪🇸 España</span>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-qmark" aria-hidden="true">"</div>
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-text">"Mi empresa fue auditada por el SAT y pensé que sería un desastre. MEDLA me representó con una estrategia impecable. Resolvimos todo sin multas y con argumentos sólidos."</p>
+        <div class="testi-author">
+          <div class="testi-av">LV</div>
+          <div><div class="testi-name">Laura Vega</div><div class="testi-role">CEO · Tech Startup</div></div>
+          <span class="testi-badge">🇲🇽 México</span>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-qmark" aria-hidden="true">"</div>
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-text">"Llegué buscando solo hacer mi declaración anual. Terminé con una planificación fiscal completa que me ahorrará miles de euros en los próximos años."</p>
+        <div class="testi-author">
+          <div class="testi-av">MG</div>
+          <div><div class="testi-name">Miguel García</div><div class="testi-role">Consultor Independiente</div></div>
+          <span class="testi-badge">🇪🇸 España</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FAQ ══════════════════════════════════════ -->
+<section class="sec-faq" id="faq">
+  <div class="wrap">
+    <div class="s-head">
+      <span class="eyebrow">Preguntas Frecuentes</span>
+      <h2>Resolvemos tus dudas</h2>
+      <div class="rule center"></div>
+    </div>
+
+    <div class="faq-wrap" id="faq-wrap">
+      <div class="faq-item">
+        <button class="faq-q">¿Cuánto puedo ahorrar con una asesoría fiscal profesional?<span class="faq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="faq-body"><div class="faq-body-inner">En la mayoría de los casos identificamos oportunidades que representan entre un 15% y 40% de reducción en la carga fiscal efectiva. En la consulta inicial hacemos un diagnóstico rápido para darte una estimación concreta.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Vivo en México pero tengo ingresos en España, ¿qué hago?<span class="faq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="faq-body"><div class="faq-body-inner">España y México tienen un Convenio para Evitar la Doble Imposición. Lo aprovechamos para que no pagues dos veces sobre los mismos ingresos, coordinando ambas jurisdicciones de forma simultánea.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Ofrecen servicio 100% remoto?<span class="faq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="faq-body"><div class="faq-body-inner">Sí. La mayoría de nuestros servicios se gestionan en línea mediante videollamadas, plataformas seguras de intercambio de documentos y firma electrónica. Tenemos clientes en más de 10 países.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Cuánto cuesta la primera consulta?<span class="faq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="faq-body"><div class="faq-body-inner">La primera consulta de diagnóstico (30 minutos) es completamente gratuita y sin compromiso. Evaluamos tu situación e identificamos las principales áreas de mejora.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Me ayudan con planificación de herencia y sucesión?<span class="faq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="faq-body"><div class="faq-body-inner">Absolutamente. La fiscalidad de la herencia es uno de nuestros campos de especialización, especialmente con activos en España y México. Diseñamos estructuras que minimizan el impacto fiscal en la transmisión generacional.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CTA ══════════════════════════════════════ -->
+<section class="sec-cta" id="contacto">
+  <div class="cta-watermark" aria-hidden="true">FISCAL</div>
+  <div class="wrap" style="position: relative; z-index: 2; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 3rem 2rem; border-radius: 24px; backdrop-filter: blur(10px); max-width: 800px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <span class="eyebrow" style="color: var(--gold);">Agenda tu cita</span>
+      <h2 style="color: var(--white); font-family: var(--ff-serif); font-size: 2.8rem; margin-bottom: 0.5rem;">Evaluación Fiscal Gratuita</h2>
+      <div class="rule center"></div>
+      <p style="color: rgba(255,255,255,0.6); font-size: 1rem;">Elige el horario que mejor te convenga y un asesor experto se pondrá en contacto contigo.</p>
+    </div>
+    <iframe src="https://api.leadconnectorhq.com/widget/booking/ExwwLZ24X6UPcOY0UGEj" style="width: 100%; border: none; overflow: hidden; min-height: 650px;" scrolling="no" id="ExwwLZ24X6UPcOY0UGEj_1780068068260"></iframe>
+    <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
+  </div>
+</section>
+
+<!-- ════ FOOTER ═══════════════════════════════════ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <img src="assets/MEDLA_logo_white.png" alt="MEDLA Asesores" style="height: 40px; width: auto; margin-bottom: 1rem;" />
+        <p class="footer-desc">Despacho legal y fiscal. Madrid, España y Ciudad Satélite, México.</p>
+        <div class="footer-flags">
+          <span class="footer-flag">🇪🇸 Madrid</span>
+          <span class="footer-flag">🇲🇽 Ciudad Satélite</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Servicios</h5>
+        <ul>
+          <li><a href="#">Declaraciones</a></li>
+          <li><a href="#">Planificación Fiscal</a></li>
+          <li><a href="#">Fiscalidad Internacional</a></li>
+          <li><a href="#">Optimización Patrimonial</a></li>
+          <li><a href="#">Defensa ante Autoridades</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Despacho</h5>
+        <ul>
+          <li><a href="#">Sobre MEDLA</a></li>
+          <li><a href="#">Equipo</a></li>
+          <li><a href="#">Blog Fiscal</a></li>
+          <li><a href="#">Casos de éxito</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="#">Madrid, España</a></li>
+          <li><a href="#">Ciudad Satélite, México</a></li>
+          <li><a href="mailto:contacto@medlaasesores.com">contacto@medlaasesores.com</a></li>
+          <li><a href="#contacto">Agendar cita</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2024 MEDLA Asesores. Desarrollado por <a href="#">Avanzza AI</a>.</p>
+      <p class="footer-copy"><a href="#">Privacidad</a> · <a href="#">Términos</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ════ GSAP Animations ══════════════════════════ -->
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── Nav ─────────────────────────────────────── */
+  ScrollTrigger.create({
+    start: 'top -60',
+    onUpdate: (self) => document.getElementById('nav').classList.toggle('is-scrolled', self.scroll() > 60)
+  });
+
+  /* ── Hero Entrance ────────────────────────────── */
+  gsap.set('#hero-badge', { autoAlpha: 0, y: 20 });
+  gsap.set('.h-line-inner', { y: '105%' });
+  gsap.set('#hero-sub',  { autoAlpha: 0, y: 20 });
+  gsap.set('#hero-ctas', { autoAlpha: 0, y: 20 });
+  gsap.set('.hstat',     { autoAlpha: 0, y: 14 });
+  gsap.set('#hero-right', { autoAlpha: 0, x: 40 });
+  gsap.set('#hero-scroll', { autoAlpha: 0 });
+
+  const heroTL = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  heroTL
+    .to('#hero-badge',    { autoAlpha: 1, y: 0, duration: 0.7 }, 0.2)
+    .to('.h-line-inner',  { y: '0%', duration: 1.1, stagger: 0.09 }, 0.45)
+    .to('#hero-right',    { autoAlpha: 1, x: 0, duration: 1.2 }, 0.3)
+    .to('#hero-sub',      { autoAlpha: 1, y: 0, duration: 0.8 }, 1.0)
+    .to('#hero-ctas',     { autoAlpha: 1, y: 0, duration: 0.8 }, 1.15)
+    .to('.hstat',         { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1 }, 1.25)
+    .to('#hero-scroll',   { autoAlpha: 1, duration: 0.6 }, 1.7);
+
+  /* ── Hero counters ────────────────────────────── */
+  document.querySelectorAll('.counter-val').forEach(el => {
+    const t = parseInt(el.dataset.to, 10);
+    gsap.to({ n: 0 }, {
+      n: t, duration: 2.5, delay: 1.3, ease: 'power2.out',
+      onUpdate() { el.textContent = Math.round(this.targets()[0].n); }
+    });
+  });
+
+  /* ── Mesh parallax ────────────────────────────── */
+  gsap.to('.hero-mesh', {
+    yPercent: 22, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+  });
+
+  /* ── Section headers ──────────────────────────── */
+  gsap.utils.toArray('.s-head').forEach(el => {
+    gsap.from(el.children, {
+      autoAlpha: 0, y: 24, duration: 0.7, stagger: 0.1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 82%', once: true }
+    });
+  });
+
+  /* ── Service strip ────────────────────────────── */
+  gsap.from('.svc-strip', {
+    autoAlpha: 0, scaleX: 0.96, duration: 0.9, ease: 'power3.out',
+    scrollTrigger: { trigger: '.svc-strip', start: 'top 85%', once: true }
+  });
+
+  /* ── Service cards: batch ─────────────────────── */
+  gsap.set('#svc-grid .svc-card', { autoAlpha: 0, y: 32 });
+  ScrollTrigger.batch('#svc-grid .svc-card', {
+    onEnter: batch => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.09, ease: 'power3.out' }),
+    start: 'top 87%', once: true
+  });
+
+  /* ── Why: photo ───────────────────────────────── */
+  gsap.set('#why-photo', { autoAlpha: 0, x: -50 });
+  gsap.to('#why-photo', {
+    autoAlpha: 1, x: 0, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '#why-photo', start: 'top 78%', once: true }
+  });
+
+  /* ── Why: heading ─────────────────────────────── */
+  gsap.from('#why-right > *:not(ul):not(.why-tags)', {
+    autoAlpha: 0, y: 22, duration: 0.7, stagger: 0.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '#why-right', start: 'top 78%', once: true }
+  });
+
+  /* ── Why: features ────────────────────────────── */
+  gsap.set('#why-feats .why-feat', { autoAlpha: 0, x: 36 });
+  ScrollTrigger.batch('#why-feats .why-feat', {
+    onEnter: batch => gsap.to(batch, { autoAlpha: 1, x: 0, duration: 0.65, stagger: 0.11, ease: 'power3.out' }),
+    start: 'top 82%', once: true
+  });
+
+  /* ── Proceso ──────────────────────────────────── */
+  gsap.set('#proceso-track .paso', { autoAlpha: 0, y: 22 });
+  ScrollTrigger.create({
+    trigger: '#proceso-track', start: 'top 78%', once: true,
+    onEnter() {
+      gsap.to('#proceso-track .paso', { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.13, ease: 'power3.out' });
+      gsap.to('#proc-line', { scaleX: 1, duration: 1.5, delay: 0.2, ease: 'power2.inOut' });
+      document.querySelectorAll('.paso').forEach((el, i) => {
+        gsap.delayedCall(0.13 * i + 0.55, () => el.classList.add('lit'));
+      });
+    }
+  });
+
+  /* ── Stats counters ───────────────────────────── */
+  gsap.set('.stat', { autoAlpha: 0, y: 22 });
+  ScrollTrigger.create({
+    trigger: '#stats-row', start: 'top 80%', once: true,
+    onEnter() {
+      gsap.to('.stat', { autoAlpha: 1, y: 0, duration: 0.65, stagger: 0.1, ease: 'power3.out' });
+      document.querySelectorAll('.c2').forEach(el => {
+        const t = parseInt(el.dataset.to, 10);
+        gsap.to({ n: 0 }, {
+          n: t, duration: 2, delay: 0.3, ease: 'power2.out',
+          onUpdate() { el.textContent = Math.round(this.targets()[0].n); }
+        });
+      });
+    }
+  });
+
+  /* ── Testimonials ─────────────────────────────── */
+  gsap.set('#testi-grid .testi-card', { autoAlpha: 0, y: 32 });
+  ScrollTrigger.batch('#testi-grid .testi-card', {
+    onEnter: batch => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.14, ease: 'power3.out' }),
+    start: 'top 84%', once: true
+  });
+
+  /* ── FAQ ──────────────────────────────────────── */
+  gsap.set('#faq-wrap .faq-item', { autoAlpha: 0, y: 16 });
+  ScrollTrigger.batch('#faq-wrap .faq-item', {
+    onEnter: batch => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.07, ease: 'power2.out' }),
+    start: 'top 85%', once: true
+  });
+
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o => o.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  /* ── CTA entrance ─────────────────────────────── */
+  gsap.from('#cta-inner > *', {
+    autoAlpha: 0, y: 28, duration: 0.8, stagger: 0.12, ease: 'power3.out',
+    scrollTrigger: { trigger: '#cta-inner', start: 'top 72%', once: true }
+  });
+
+  /* ── CTA watermark parallax ───────────────────── */
+  gsap.to('.cta-watermark', {
+    yPercent: -12, ease: 'none',
+    scrollTrigger: { trigger: '.sec-cta', start: 'top bottom', end: 'bottom top', scrub: 1 }
+  });
+</script>
+</body>
+</html>
